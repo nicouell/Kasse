@@ -9,6 +9,7 @@ class App extends Component {
       <div>
         <Layout>
           <ControlPanel />
+          <h1>Test github ssh</h1>
         </Layout>
       </div>
     );
