@@ -50,21 +50,11 @@ router.post(
     const endDate = beginDate + 30 * 24 * 60 * 60 * 1000;
     const log = [];
 
-    while (beginDate <= endDate) {
-      let d = new Date(beginDate);
-      log.push({
-        date: d,
-        debut: req.body.solde,
-        fin: req.body.solde
-      });
-      beginDate += 24 * 60 * 60 * 1000;
-    }
-
     const newWallet = new Wallet({
       name: req.body.name,
-      solde: req.body.solde,
-      log: log
+      solde: req.body.solde
     });
+    newWallet.initiateDate();
     newWallet.save().then(wallet => res.json(wallet));
   }
 );

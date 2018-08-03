@@ -42,14 +42,14 @@ const WalletSchema = new Schema({
   }
 });
 
-WalletSchema.initiateDate = () => {
+WalletSchema.methods.initiateDate = () => {
   let beginDate = Date.now();
   const endDate = beginDate + 30 * 24 * 60 * 60 * 1000;
-  const log = [];
+  const log = this.log;
 
   while (beginDate <= endDate) {
     let d = new Date(beginDate);
-    this.log.push({
+    log.push({
       date: d,
       debut: this.solde,
       fin: this.solde
