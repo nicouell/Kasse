@@ -76,15 +76,23 @@ router.post(
 // @desc    add to solde
 // @access  Private
 
-router.post("/soldeadd/:id", passport.authenticate("jwt", { session: false })),
+router.post(
+  "/soldeadd/:id",
+  passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    //    const solde = req.solde;
-    const id = req.params.id;
-    const walletFieldAdd = {};
-    walletFieldAdd.solde = req.body.addToSolde;
-    Wallet.findByIdAndUpdate(id, { $set: walletFieldAdd }, { new: true }).then(
-      wallet => res.json(wallet)
-    );
-  };
+    Wallet.findById(req.params.id).then(wallet => {
+      const solde = wallet.solde;
+      console.log(solde);
+      const id = req.params.id;
+      const updatedSolde = parseFloat(req.body.addToSolde) + solde;
+      console.log(updatedSolde);
+      Wallet.findByIdAndUpdate(
+        id,
+        { $set: { solde: updatedSolde.toString() } },
+        { new: true }
+      ).then(wallet => res.json(wallet));
+    });
+  }
+);
 
 module.exports = router;
