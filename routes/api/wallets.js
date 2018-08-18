@@ -82,13 +82,54 @@ router.post(
   (req, res) => {
     Wallet.findById(req.params.id).then(wallet => {
       const solde = wallet.solde;
-      console.log(solde);
+      const logArray = wallet.log;
+      const today = new Date(Date.now()).getDate();
+      const index = logArray
+        .map(dt => new Date(dt.date).getDate())
+        .indexOf(today);
       const id = req.params.id;
       const updatedSolde = parseFloat(req.body.addToSolde) + solde;
-      console.log(updatedSolde);
+      logArray.map((lg, i) => {
+        if (i >= index) {
+          lg.debut = updatedSolde;
+          lg.fin = updatedSolde;
+        }
+      });
       Wallet.findByIdAndUpdate(
         id,
-        { $set: { solde: updatedSolde.toString() } },
+        { $set: { solde: updatedSolde.toString(), log: logArray } },
+        { new: true }
+      ).then(wallet => res.json(wallet));
+    });
+  }
+);
+
+// @route   POST api/wallet/:id/soldeadd
+// @desc    add to solde
+// @access  Private
+
+router.post(
+  "/soldedim/:id",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    Wallet.findById(req.params.id).then(wallet => {
+      const solde = wallet.solde;
+      const logArray = wallet.log;
+      const today = new Date(Date.now()).getDate();
+      const index = logArray
+        .map(dt => new Date(dt.date).getDate())
+        .indexOf(today);
+      const id = req.params.id;
+      const updatedSolde = solde - parseFloat(req.body.dimToSolde);
+      logArray.map((lg, i) => {
+        if (i >= index) {
+          lg.debut = updatedSolde;
+          lg.fin = updatedSolde;
+        }
+      });
+      Wallet.findByIdAndUpdate(
+        id,
+        { $set: { solde: updatedSolde.toString(), log: logArray } },
         { new: true }
       ).then(wallet => res.json(wallet));
     });
