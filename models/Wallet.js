@@ -42,21 +42,21 @@ const WalletSchema = new Schema({
   }
 });
 
-WalletSchema.methods.initiateDate = () => {
+WalletSchema.methods.initiateDate = solde => {
   let beginDate = Date.now();
   const endDate = beginDate + 30 * 24 * 60 * 60 * 1000;
-  const log = this.log;
+  const logArray = [];
 
   while (beginDate <= endDate) {
     let d = new Date(beginDate);
-    log.push({
+    logArray.push({
       date: d,
-      debut: this.solde,
-      fin: this.solde
+      debut: solde,
+      fin: solde
     });
     beginDate += 24 * 60 * 60 * 1000;
   }
-  return log;
+  return logArray;
 };
 
 module.exports = Wallet = mongoose.model("wallets", WalletSchema);

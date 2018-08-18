@@ -16,10 +16,19 @@ router.get(
   "/",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    Wallet.find()
+    const errors = {};
+
+    Wallet.find({ user: req.user.id })
       .sort({ date: -1 })
-      .then(wallets => res.json(wallets))
-      .catch(err => res.status(404).json({ nowalletfound: "No Wallet found" }));
+      .populate("user", ["name", "solde"])
+      .then(wallets => {
+        if (!wallets) {
+          errors.noprofile = "There is no wallets for this user";
+          return res.status(404).json(errors);
+        }
+        res.json(wallets);
+      })
+      .catch(err => res.status(404).json(err));
   }
 );
 
@@ -30,11 +39,18 @@ router.get(
   "/:id",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    Wallet.findById(req.params.id)
-      .then(wallet => res.json(wallet))
-      .catch(err =>
-        res.status(404).json({ nopostfound: "No Wallet found with that ID" })
-      );
+    User.findOne({ id: req.user.id }).then(user => {
+      Wallet.findById(req.params.id)
+        .then(wallet => {
+          if (wallet.user.toString() !== req.user.id) {
+            return res.status(401).json({ notautorized: "user not autorized" });
+          }
+          res.json(wallet);
+        })
+        .catch(err =>
+          res.status(404).json({ nopostfound: "No Wallet found with that ID" })
+        );
+    });
   }
 );
 
@@ -46,17 +62,23 @@ router.post(
   "/",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    let beginDate = Date.now();
-    const endDate = beginDate + 30 * 24 * 60 * 60 * 1000;
-    const log = [];
-
     const newWallet = new Wallet({
+      user: req.user.id,
       name: req.body.name,
       solde: req.body.solde
     });
-    newWallet.initiateDate();
+    newWallet.log = newWallet.initiateDate(req.body.solde);
     newWallet.save().then(wallet => res.json(wallet));
   }
 );
+
+// @route   POST api/wallet/soldeadd
+// @desc    add to solde
+// @access  Private
+
+router.post("/soldeadd", passport.authenticate("jwt", { session: false })),
+  (req, res) => {
+    Wallet.findById(req.params);
+  };
 
 module.exports = router;
