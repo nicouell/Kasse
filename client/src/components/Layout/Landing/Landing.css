@@ -1,12 +1,30 @@
 .Landing {
   display: flex;
+  flex-direction: column;
   justify-content: center;
+  align-items: center;
+}
+
+.ButtonBlock {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 50%;
+  margin-top: 5%;
+}
+
+.h1 {
+  font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+  font-size: 50px;
+  text-align: center;
   margin-top: 10%;
+  color: rgb(49, 49, 49);
 }
 
 .Button {
   background-color: lightblue;
-  width: 10%;
+  width: 25%;
   border: none;
   color: black;
   padding: 15px 32px;
