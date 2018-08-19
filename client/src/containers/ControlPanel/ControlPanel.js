@@ -1,17 +1,18 @@
-import React, {Component} from 'react';
+import React, { Component } from "react";
 
-import Aux from '../../hoc/Aux/Aux';
+import Aux from "../../hoc/Aux/Aux";
+import Graph from "../../components/Graph/Graph";
 
 class ControlPanel extends Component {
   render() {
-    return(
+    return (
       <Aux>
-        <p>Graph</p>
+        <Graph data={{}} />
         <p>Achat</p>
         <p>Info</p>
         <p>+ / -</p>
       </Aux>
-    )
+    );
   }
 }
 

@@ -1,13 +1,13 @@
 import React from "react";
 
-import Landing from "./Landing/Landing";
+import Footer from "../../components/Footer/Footer";
 import classe from "./Layout.css";
 
 const layout = props => {
   return (
-    <div className={classe.Landing}>
-      <Landing />
+    <div className={classe.Layout}>
       {props.children}
+      <Footer />
     </div>
   );
 };
