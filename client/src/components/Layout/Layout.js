@@ -1,9 +1,11 @@
-import React from 'react';
+import React from "react";
 
-const layout = (props) => {
+import Landing from "./Landing/Landing";
 
-  return(
+const layout = props => {
+  return (
     <main>
+      <Landing />
       {props.children}
     </main>
   );
