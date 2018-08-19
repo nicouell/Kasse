@@ -105,7 +105,7 @@ router.post(
 );
 
 // @route   POST api/wallet/:id/soldeadd
-// @desc    add to solde
+// @desc    diminuing to solde
 // @access  Private
 
 router.post(
@@ -133,6 +133,20 @@ router.post(
         { new: true }
       ).then(wallet => res.json(wallet));
     });
+  }
+);
+
+// @route   DELETG api/wallet/:id
+// @desc    delete solde
+// @access  Private
+
+router.delete(
+  "/:id",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    Wallet.findByIdAndRemove(req.params.id).then(() =>
+      res.json({ succes: true })
+    );
   }
 );
 
