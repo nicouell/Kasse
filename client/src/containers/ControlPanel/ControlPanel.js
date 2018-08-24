@@ -7,15 +7,30 @@ import Aux from "../../hoc/Aux/Aux";
 //import Graph from "../../components/Graph/Graph";
 
 class ControlPanel extends Component {
+  componentDidMount() {
+    this.props.getCurrentWallet();
+  }
+
   render() {
     const { user } = this.props.auth;
-    const { wallets, loading } = this.props.wallets;
+    const { wallets, loading } = this.props.wallet;
 
-    return (
-      <Aux>
-        <h4>Hello</h4>
-      </Aux>
-    );
+    let panelContent;
+
+    if (wallets === null || loading) {
+      panelContent = <h4>Loading...</h4>;
+    } else {
+      panelContent = (
+        <div>
+          <p>Graph</p>
+          <p>Info</p>
+          <p>Achat</p>
+          <p>+/-</p>
+        </div>
+      );
+    }
+
+    return <Aux>{panelContent}</Aux>;
   }
 }
 
@@ -26,7 +41,7 @@ ControlPanel.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  wallets: state.wallets,
+  wallet: state.wallet,
   auth: state.auth
 });
 
