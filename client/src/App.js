@@ -12,6 +12,7 @@ import Landing from "./components/Landing/Landing";
 import Layout from "./hoc/Layout/Layout";
 import Register from "./components/Register/Register";
 import Login from "./components/Login/Login";
+import { clearCurrentWallet } from "./Action/walletActions";
 
 if (localStorage.jwtToken) {
   setAuthToken(localStorage.jwtToken);
@@ -20,6 +21,7 @@ if (localStorage.jwtToken) {
   const currentTime = Date.now() / 1000;
   if (decoded.exp < currentTime) {
     store.dispatch(logoutUser());
+    store.dispatch(clearCurrentWallet());
     window.location.href = "/login";
   }
 }

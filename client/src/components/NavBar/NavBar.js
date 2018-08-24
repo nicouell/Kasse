@@ -4,12 +4,14 @@ import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { logoutUser } from "../../Action/authAction";
+import { clearCurrentWallet } from "../../Action/walletActions";
 
 import classe from "./NavBar.css";
 
 class NavBar extends Component {
   onLogoutClick(e) {
     e.preventDefault();
+    this.props.clearCurrentWallet();
     this.props.logoutUser();
     window.location.href = "/login";
   }
@@ -75,5 +77,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { logoutUser }
+  { logoutUser, clearCurrentWallet }
 )(NavBar);

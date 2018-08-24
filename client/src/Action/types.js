@@ -1,3 +1,8 @@
 export const TEST_DISPATCH = "TEST_DISPATCH";
 export const GET_ERRORS = "GET_ERRORS";
 export const SET_CURRENT_USER = "SET_CURRENT_USER";
+export const GET_WALLET = "GET_WALLET";
+export const WALLET_LOADING = "WALLET_LOADING";
+export const WALLET_NOT_FOUND = "WALLET_NOT_FOUND";
+export const CLEAR_CURRENT_WALLET = "CLEAR_CURRENT_WALLET";
+export const GET_WALLETS = "GET_WALLETS";

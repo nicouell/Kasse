@@ -1,19 +1,36 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { getCurrentWallet } from "../../Action/walletActions";
 
 import Aux from "../../hoc/Aux/Aux";
 //import Graph from "../../components/Graph/Graph";
 
 class ControlPanel extends Component {
   render() {
+    const { user } = this.props.auth;
+    const { wallets, loading } = this.props.wallets;
+
     return (
       <Aux>
-        <p>Graph</p>
-        <p>Achat</p>
-        <p>Info</p>
-        <p>+ / -</p>
+        <h4>Hello</h4>
       </Aux>
     );
   }
 }
 
-export default ControlPanel;
+ControlPanel.propTypes = {
+  getCurrentWallet: PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired,
+  wallets: PropTypes.object.isRequired
+};
+
+const mapStateToProps = state => ({
+  wallets: state.wallets,
+  auth: state.auth
+});
+
+export default connect(
+  mapStateToProps,
+  { getCurrentWallet }
+)(ControlPanel);
