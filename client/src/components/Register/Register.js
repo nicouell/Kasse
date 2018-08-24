@@ -47,46 +47,51 @@ class Register extends Component {
   render() {
     return (
       <div className={classe.Register}>
-        <form onSubmit={this.onSubmit}>
-          Name:
-          <input
-            type="text"
-            id="name"
-            name="name"
-            placeholder="Name..."
-            value={this.state.name}
-            onChange={this.onChange}
-          />
-          <br />
-          Email:{" "}
-          <input
-            type="text"
-            name="email"
-            placeholder="Email..."
-            value={this.state.email}
-            onChange={this.onChange}
-          />
-          <br />
-          Password:{" "}
-          <input
-            type="password"
-            name="password"
-            placeholder="Password..."
-            value={this.state.password}
-            onChange={this.onChange}
-          />
-          <br />
-          Retype Password:{" "}
-          <input
-            type="password"
-            name="password2"
-            placeholder="Password..."
-            value={this.state.password2}
-            onChange={this.onChange}
-          />
-          <br />
-          <input type="submit" value="Submit" />
-        </form>
+        <div>
+          <h1 className={classe.Title}>Sing Up</h1>
+        </div>
+        <div className={classe.Form}>
+          <form onSubmit={this.onSubmit}>
+            Name:
+            <input
+              type="text"
+              id="name"
+              name="name"
+              placeholder="Name..."
+              value={this.state.name}
+              onChange={this.onChange}
+            />
+            <br />
+            Email:{" "}
+            <input
+              type="text"
+              name="email"
+              placeholder="Email..."
+              value={this.state.email}
+              onChange={this.onChange}
+            />
+            <br />
+            Password:{" "}
+            <input
+              type="password"
+              name="password"
+              placeholder="Password..."
+              value={this.state.password}
+              onChange={this.onChange}
+            />
+            <br />
+            Retype Password:{" "}
+            <input
+              type="password"
+              name="password2"
+              placeholder="Password..."
+              value={this.state.password2}
+              onChange={this.onChange}
+            />
+            <br />
+            <input type="submit" value="Submit" />
+          </form>
+        </div>
       </div>
     );
   }
