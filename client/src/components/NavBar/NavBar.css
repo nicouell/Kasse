@@ -1,12 +1,15 @@
 .Navbar {
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
+
+.Ul {
   list-style-type: none;
   margin: 0;
   padding: 0;
   overflow: hidden;
   background-color: #333;
-  position: absolute;
-  top: 0;
-  width: 100%;
 }
 
 .Liste {
