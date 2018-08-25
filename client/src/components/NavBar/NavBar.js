@@ -13,7 +13,6 @@ class NavBar extends Component {
     e.preventDefault();
     this.props.clearCurrentWallet();
     this.props.logoutUser();
-    window.location.href = "/login";
   }
 
   render() {
