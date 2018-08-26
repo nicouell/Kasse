@@ -90,7 +90,9 @@ router.post(
       const id = req.params.id;
       const updatedSolde = parseFloat(req.body.addToSolde) + solde;
       logArray.map((lg, i) => {
-        if (i >= index) {
+        if (i === index) {
+          lg.fin = updatedSolde;
+        } else if (i > index) {
           lg.debut = updatedSolde;
           lg.fin = updatedSolde;
         }
@@ -104,7 +106,7 @@ router.post(
   }
 );
 
-// @route   POST api/wallet/:id/soldeadd
+// @route   POST api/wallet/soldedim/:id
 // @desc    diminuing to solde
 // @access  Private
 
@@ -122,7 +124,9 @@ router.post(
       const id = req.params.id;
       const updatedSolde = solde - parseFloat(req.body.dimToSolde);
       logArray.map((lg, i) => {
-        if (i >= index) {
+        if (i === index) {
+          lg.fin = updatedSolde;
+        } else if (i > index) {
           lg.debut = updatedSolde;
           lg.fin = updatedSolde;
         }

@@ -44,7 +44,7 @@ const WalletSchema = new Schema({
 
 WalletSchema.methods.initiateDate = solde => {
   let beginDate = Date.now();
-  const endDate = beginDate + 30 * 24 * 60 * 60 * 1000;
+  const endDate = beginDate + 365 * 24 * 60 * 60 * 1000;
   const logArray = [];
 
   while (beginDate <= endDate) {

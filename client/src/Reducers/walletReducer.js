@@ -1,5 +1,6 @@
 import {
   GET_WALLETS,
+  GET_WALLET,
   WALLET_LOADING,
   CLEAR_CURRENT_WALLET
 } from "../Action/types";
@@ -21,6 +22,12 @@ export default function(state = initialState, action) {
       return {
         ...state,
         wallets: action.payload,
+        loading: false
+      };
+    case GET_WALLET:
+      return {
+        ...state,
+        wallet: action.payload,
         loading: false
       };
     case CLEAR_CURRENT_WALLET:

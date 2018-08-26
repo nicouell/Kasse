@@ -6,6 +6,10 @@ import "./Graph.css";
 class Graph extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      width: this.props.width,
+      height: this.props.height
+    };
     this.createGraphSolde = this.createGraphSolde.bind(this);
   }
 
@@ -17,50 +21,56 @@ class Graph extends Component {
     this.createGraphSolde();
   }
 
+  componentWillReceiveProps(nextProps) {
+    this.setState({ width: nextProps.width, height: nextProps.height });
+  }
+
   createGraphSolde() {
     const node = this.node;
-    const dataLength = this.props.data.length;
-    const dataMax = max(this.props.data, d => d.fin);
-    const dataMin = min(this.props.data, d => d.fin);
-    const margin = 55;
+    const recivedData = this.props.data.slice(0, 50);
+    const dataLength = recivedData.length;
+    const dataMax = max(recivedData, d => d.debut);
+    const dataMin = min(recivedData, d => d.fin);
+    const margin = 50;
     const yScale = scaleLinear()
       .domain([dataMin, dataMax])
-      .range([margin, this.props.size[1] - margin]);
+      .range([margin, this.state.height - margin]);
     const xScale = scaleLinear()
-      .domain([1, this.props.data.length])
-      .range([margin, this.props.size[0] - margin]);
+      .domain([1, dataLength])
+      .range([margin, this.state.width - margin]);
 
     select(node)
       .selectAll("g.range")
-      .data(this.props.data)
+      .data(recivedData)
       .enter()
       .append("g")
       .attr("class", "range");
 
     select(node)
       .selectAll("g.range")
-      .data(this.props.data)
+      .data(recivedData)
       .exit()
       .remove()
       .attr("class", "range");
 
     select(node)
       .selectAll("g.range")
-      .data(this.props.data)
+      .data(recivedData)
+      .style("shape-rendering", "crispEdges")
       .attr(
         "transform",
         d =>
           "translate(" +
-          xScale(this.props.data.indexOf(d)) +
+          xScale(recivedData.indexOf(d)) +
           ", " +
-          (this.props.size[1] - yScale(d.debut)) +
+          (this.state.height - yScale(d.debut)) +
           ")"
       )
       .each(function(d, i) {
         const width = Math.ceil(xScale(dataLength) / dataLength / 25);
-        const xl = xScale(dataLength) / dataLength / 2.4;
-        const mxl = xScale(dataLength) / dataLength / -2.4;
-        console.log(width);
+        const xl = Math.floor(xScale(dataLength) / dataLength / 2.4);
+        const mxl = Math.ceil(xScale(dataLength) / dataLength / -2.4);
+        const y = Math.floor(yScale(d.debut) - yScale(d.fin));
         if (d.debut > d.fin) {
           select(this)
             .append("line")
@@ -68,7 +78,7 @@ class Graph extends Component {
             .attr("x1", 0)
             .attr("x2", 0)
             .attr("y1", 0)
-            .attr("y2", yScale(d.debut) - yScale(d.fin))
+            .attr("y2", y)
             .style("stroke-width", width)
             .style("stroke", "red")
             .style("stroke-linecap", "butt");
@@ -87,8 +97,8 @@ class Graph extends Component {
             .attr("class", "fin")
             .attr("x1", 0)
             .attr("x2", xl)
-            .attr("y1", yScale(d.debut) - yScale(d.fin))
-            .attr("y2", yScale(d.debut) - yScale(d.fin))
+            .attr("y1", y)
+            .attr("y2", y)
             .style("stroke-width", width)
             .style("stroke", "red")
             .style("stroke-linecap", "round");
@@ -99,7 +109,7 @@ class Graph extends Component {
             .attr("x1", 0)
             .attr("x2", 0)
             .attr("y1", 0)
-            .attr("y2", yScale(d.debut) - yScale(d.fin))
+            .attr("y2", y)
             .style("stroke-width", width)
             .style("stroke", "green")
             .style("stroke-linecap", "butt");
@@ -118,8 +128,8 @@ class Graph extends Component {
             .attr("class", "fin")
             .attr("x1", 0)
             .attr("x2", xl)
-            .attr("y1", yScale(d.debut) - yScale(d.fin))
-            .attr("y2", yScale(d.debut) - yScale(d.fin))
+            .attr("y1", y)
+            .attr("y2", y)
             .style("stroke-width", width)
             .style("stroke", "green")
             .style("stroke-linecap", "round");
@@ -129,8 +139,8 @@ class Graph extends Component {
             .attr("class", "fin")
             .attr("x1", mxl)
             .attr("x2", xl)
-            .attr("y1", yScale(d.debut) - yScale(d.fin))
-            .attr("y2", yScale(d.debut) - yScale(d.fin))
+            .attr("y1", y)
+            .attr("y2", y)
             .style("stroke-width", width)
             .style("stroke", "darkblue")
             .style("stroke-linecap", "round");
@@ -143,8 +153,8 @@ class Graph extends Component {
       <svg
         className="Svg"
         ref={node => (this.node = node)}
-        width={1000}
-        height={500}
+        width={this.state.width}
+        height={this.state.height}
       />
     );
   }

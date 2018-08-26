@@ -13,6 +13,7 @@ import Landing from "./components/Landing/Landing";
 import Layout from "./hoc/Layout/Layout";
 import Register from "./components/Register/Register";
 import Login from "./components/Login/Login";
+import CreatWallet from "./components/CreateWallet/CreatWallet";
 import { clearCurrentWallet } from "./Action/walletActions";
 
 if (localStorage.jwtToken) {
@@ -38,6 +39,13 @@ class App extends Component {
             <Route exact path="/login" component={Login} />
             <Switch>
               <PrivateRoute exact path="/wallet" component={ControlPanel} />
+            </Switch>
+            <Switch>
+              <PrivateRoute
+                exact
+                path="/create-wallet"
+                component={CreatWallet}
+              />
             </Switch>
           </Layout>
         </Router>

@@ -1,14 +1,18 @@
+.Panel {
+  width: 100%;
+}
+
 .Button {
   background-color: lightblue;
-  width: 100%;
+  width: 90%;
   border: none;
   color: black;
-  padding: 15px 32px;
+  padding: 15px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
   font-size: 16px;
-  margin: 10px 10px;
+  margin: 10px;
   cursor: pointer;
   border-radius: 3px;
   transition-duration: 0.4s;
