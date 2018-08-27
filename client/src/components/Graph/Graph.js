@@ -27,7 +27,7 @@ class Graph extends Component {
 
   createGraphSolde() {
     const node = this.node;
-    const recivedData = this.props.data.slice(0, 50);
+    const recivedData = this.props.data.slice(0, 101);
     const dataLength = recivedData.length;
     const dataMax = max(recivedData, d => d.debut);
     const dataMin = min(recivedData, d => d.fin);
@@ -56,7 +56,7 @@ class Graph extends Component {
     select(node)
       .selectAll("g.range")
       .data(recivedData)
-      .style("shape-rendering", "crispEdges")
+      .style("shape-rendering", "auto")
       .attr(
         "transform",
         d =>

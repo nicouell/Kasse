@@ -140,6 +140,78 @@ router.post(
   }
 );
 
+// @route   POST api/wallet/soldeadddate/:id
+// @desc    adding to solde on certain date
+// @access  Private
+
+router.post(
+  "/soldeadddate/:id",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    Wallet.findById(req.params.id).then(wallet => {
+      const id = req.params.id;
+      const choosedDate = new Date(
+        req.body.year,
+        req.body.month,
+        req.body.day
+      ).getDate();
+      const logArray = wallet.log;
+      const index = logArray
+        .map(dt => new Date(dt.date).getDate())
+        .indexOf(choosedDate);
+      logArray.map((lg, i) => {
+        if (i === index) {
+          lg.fin = lg.fin + parseFloat(req.body.addToSolde);
+        } else if (i > index) {
+          lg.fin = lg.fin + parseFloat(req.body.addToSolde);
+          lg.debut = lg.debut + parseFloat(req.body.addToSolde);
+        }
+      });
+      Wallet.findByIdAndUpdate(
+        id,
+        { $set: { log: logArray } },
+        { new: true }
+      ).then(wallet => res.json(wallet));
+    });
+  }
+);
+
+// @route   POST api/wallet/soldedimdate/:id
+// @desc    dim to solde on certain date
+// @access  Private
+
+router.post(
+  "/soldedimdate/:id",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    Wallet.findById(req.params.id).then(wallet => {
+      const id = req.params.id;
+      const choosedDate = new Date(
+        req.body.year,
+        req.body.month,
+        req.body.day
+      ).getDate();
+      const logArray = wallet.log;
+      const index = logArray
+        .map(dt => new Date(dt.date).getDate())
+        .indexOf(choosedDate);
+      logArray.map((lg, i) => {
+        if (i === index) {
+          lg.fin = lg.fin - parseFloat(req.body.dimToSolde);
+        } else if (i > index) {
+          lg.fin = lg.fin - parseFloat(req.body.dimToSolde);
+          lg.debut = lg.debut - parseFloat(req.body.dimToSolde);
+        }
+      });
+      Wallet.findByIdAndUpdate(
+        id,
+        { $set: { log: logArray } },
+        { new: true }
+      ).then(wallet => res.json(wallet));
+    });
+  }
+);
+
 // @route   DELETG api/wallet/:id
 // @desc    delete solde
 // @access  Private
