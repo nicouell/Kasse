@@ -1,8 +1,16 @@
 import React, { Component } from "react";
-import { select, max, min, scaleLinear, axisBottom } from "d3";
+import {
+  select,
+  max,
+  min,
+  scaleLinear,
+  axisBottom,
+  axisLeft,
+  scaleTime
+} from "d3";
 import Axis from "./Axis";
 
-import "./Graph.css";
+import classe from "./Graph.css";
 
 class Graph extends Component {
   constructor(props) {
@@ -28,7 +36,7 @@ class Graph extends Component {
 
   createGraphSolde() {
     const node = this.node;
-    const recivedData = this.props.data.slice(0, 101);
+    const recivedData = this.props.data.slice(0, 100);
     const dataLength = recivedData.length;
     const dataMax = max(recivedData, d => d.debut);
     const dataMin = min(recivedData, d => d.fin);
@@ -39,8 +47,6 @@ class Graph extends Component {
     const xScale = scaleLinear()
       .domain([1, dataLength])
       .range([margin, this.state.width - margin]);
-    const xAxis = axisBottom().scale(xScale);
-
     select(node)
       .selectAll("g.range")
       .data(recivedData)
@@ -54,6 +60,18 @@ class Graph extends Component {
       .exit()
       .remove()
       .attr("class", "range");
+
+    select(node)
+      .append("line")
+      .attr("class", "fin")
+      .attr("x1", xScale(-1))
+      .attr("x2", xScale(100))
+      .attr("y1", this.state.height - yScale(0))
+      .attr("y2", this.state.height - yScale(0))
+      .style("stroke-width", 0.5)
+      .style("stroke", "grey")
+      .style("stroke-dasharray", "4.1")
+      .style("stroke-linecap", "round");
 
     select(node)
       .selectAll("g.range")
@@ -73,6 +91,7 @@ class Graph extends Component {
         const xl = Math.floor(xScale(dataLength) / dataLength / 2.4);
         const mxl = Math.ceil(xScale(dataLength) / dataLength / -2.4);
         const y = Math.floor(yScale(d.debut) - yScale(d.fin));
+
         if (d.debut > d.fin) {
           select(this)
             .append("line")
@@ -151,21 +170,22 @@ class Graph extends Component {
   }
 
   render() {
-    const recivedData = this.props.data.slice(0, 101);
-    const dataLength = recivedData.length;
+    const recivedData = this.props.data.slice(0, 100);
     const dataMax = max(recivedData, d => d.debut);
     const dataMin = min(recivedData, d => d.fin);
+    const startDate = new Date(this.props.data[0].date);
+    const endDate = new Date(this.props.data[100].date);
     const margin = 50;
     const yScale = scaleLinear()
       .domain([dataMin, dataMax])
-      .range([margin, this.state.height - margin]);
-    const xScale = scaleLinear()
-      .domain([1, dataLength])
+      .range([this.state.height - margin, margin]);
+    const xScale = scaleTime()
+      .domain([startDate, endDate])
       .range([margin, this.state.width - margin]);
     return (
       <div>
         <svg
-          className="Svg"
+          className={classe.Svg}
           ref={node => (this.node = node)}
           width={this.state.width}
           height={this.state.height}
@@ -173,8 +193,15 @@ class Graph extends Component {
           <g>
             <Axis
               axis="x"
-              transform={"translate(0," + (this.state.height - 20) + ")"}
+              transform={"translate(-10," + (this.state.height - 20) + ")"}
               scale={axisBottom().scale(xScale)}
+            />
+          </g>
+          <g>
+            <Axis
+              axis="y"
+              transform={"translate( 30, 0)"}
+              scale={axisLeft().scale(yScale)}
             />
           </g>
         </svg>

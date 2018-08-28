@@ -51,7 +51,7 @@ class ControlPanel extends Component {
       if (Object.keys(wallets).length > 0) {
         panelContent = (
           <div className={classe.Panel}>
-            <Graph data={wallet.log} width={1000} height={500} />
+            <Graph data={wallet.log} width={1300} height={600} />
             <p>Info</p>
             <p>Achat</p>
             <p>+/-</p>
