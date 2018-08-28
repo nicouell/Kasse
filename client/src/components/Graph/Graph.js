@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import { select, max, min, scaleLinear } from "d3";
+import { select, max, min, scaleLinear, axisBottom } from "d3";
+import Axis from "./Axis";
 
 import "./Graph.css";
 
@@ -38,6 +39,7 @@ class Graph extends Component {
     const xScale = scaleLinear()
       .domain([1, dataLength])
       .range([margin, this.state.width - margin]);
+    const xAxis = axisBottom().scale(xScale);
 
     select(node)
       .selectAll("g.range")
@@ -149,13 +151,34 @@ class Graph extends Component {
   }
 
   render() {
+    const recivedData = this.props.data.slice(0, 101);
+    const dataLength = recivedData.length;
+    const dataMax = max(recivedData, d => d.debut);
+    const dataMin = min(recivedData, d => d.fin);
+    const margin = 50;
+    const yScale = scaleLinear()
+      .domain([dataMin, dataMax])
+      .range([margin, this.state.height - margin]);
+    const xScale = scaleLinear()
+      .domain([1, dataLength])
+      .range([margin, this.state.width - margin]);
     return (
-      <svg
-        className="Svg"
-        ref={node => (this.node = node)}
-        width={this.state.width}
-        height={this.state.height}
-      />
+      <div>
+        <svg
+          className="Svg"
+          ref={node => (this.node = node)}
+          width={this.state.width}
+          height={this.state.height}
+        >
+          <g>
+            <Axis
+              axis="x"
+              transform={"translate(0," + (this.state.height - 20) + ")"}
+              scale={axisBottom().scale(xScale)}
+            />
+          </g>
+        </svg>
+      </div>
     );
   }
 }

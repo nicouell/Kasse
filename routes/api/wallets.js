@@ -154,10 +154,16 @@ router.post(
         req.body.year,
         req.body.month,
         req.body.day
-      ).getDate();
+      ).getTime();
       const logArray = wallet.log;
       const index = logArray
-        .map(dt => new Date(dt.date).getDate())
+        .map(dt =>
+          new Date(
+            dt.date.getFullYear(),
+            dt.date.getMonth(),
+            dt.date.getDate()
+          ).getTime()
+        )
         .indexOf(choosedDate);
       logArray.map((lg, i) => {
         if (i === index) {
@@ -190,10 +196,16 @@ router.post(
         req.body.year,
         req.body.month,
         req.body.day
-      ).getDate();
+      ).getTime();
       const logArray = wallet.log;
       const index = logArray
-        .map(dt => new Date(dt.date).getDate())
+        .map(dt =>
+          new Date(
+            dt.date.getFullYear(),
+            dt.date.getMonth(),
+            dt.date.getDate()
+          ).getTime()
+        )
         .indexOf(choosedDate);
       logArray.map((lg, i) => {
         if (i === index) {
